@@ -1,0 +1,111 @@
+.appShell {
+  display: flex;
+  min-height: 100svh;
+}
+
+.sidebar {
+  width: 260px;
+  padding: 18px;
+  border-right: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 92%, var(--code-bg) 8%);
+}
+
+.sidebar h2 {
+  margin: 0 0 12px;
+}
+
+.nav {
+  display: grid;
+  gap: 8px;
+}
+
+.nav a {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--text-h);
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.nav a.active {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
+
+.content {
+  flex: 1;
+  padding: 22px;
+}
+
+.card {
+  max-width: 880px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 860px) {
+  .sidebar {
+    display: none;
+  }
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 14px;
+  color: var(--text);
+}
+
+input,
+button {
+  font: inherit;
+}
+
+input {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+button {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--accent-border);
+  background: var(--accent-bg);
+  color: var(--text-h);
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.muted {
+  color: var(--text);
+  font-size: 14px;
+}
+
+.error {
+  color: #b91c1c;
+  font-size: 14px;
+}
