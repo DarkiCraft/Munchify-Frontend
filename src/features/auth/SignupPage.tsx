@@ -1,26 +1,29 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Link } from 'react-router-dom'
-import { useAuth } from './AuthProvider'
+import * as authApi from './authApi'
 
-export function LoginPage() {
-  const auth = useAuth()
+export function SignupPage() {
   const navigate = useNavigate()
+  const [userName, setUserName] = useState('alice')
   const [email, setEmail] = useState('alice@example.com')
   const [password, setPassword] = useState('Password123')
-  const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [createdUserId, setCreatedUserId] = useState<number | null>(null)
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault()
     setError(null)
+    setCreatedUserId(null)
     setBusy(true)
     try {
-      await auth.login(email, password)
-      navigate('/recommendations')
+      const resp = await authApi.signup(userName, email, password)
+      setCreatedUserId(resp.user_id)
+      // Signup does not return JWT; redirect to login.
+      navigate('/login')
     } catch (err: any) {
-      setError(err?.message || 'Login failed')
+      setError(err?.message || 'Signup failed')
     } finally {
       setBusy(false)
     }
@@ -28,14 +31,16 @@ export function LoginPage() {
 
   return (
     <div className="card">
-      <h1>Login</h1>
+      <h1>Signup</h1>
       <p className="muted">
-        Uses <code>/auth/login</code> (OAuth2 password form) and stores the JWT in localStorage.
+        Creates an account via <code>POST /auth/signup</code>, then redirects to login.
       </p>
-      <p className="muted" style={{ marginTop: 8 }}>
-        No account? <Link to="/signup">Create one</Link>.
-      </p>
+
       <form onSubmit={onSubmit} style={{ marginTop: 16, display: 'grid', gap: 12 }}>
+        <div className="field">
+          <label>Username</label>
+          <input value={userName} onChange={(e) => setUserName(e.target.value)} />
+        </div>
         <div className="field">
           <label>Email</label>
           <input value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -49,8 +54,9 @@ export function LoginPage() {
           />
         </div>
         {error ? <div className="error">{error}</div> : null}
+        {createdUserId ? <div className="muted">Created user_id={createdUserId}</div> : null}
         <button disabled={busy} type="submit">
-          {busy ? 'Logging in…' : 'Login'}
+          {busy ? 'Creating…' : 'Create account'}
         </button>
       </form>
     </div>

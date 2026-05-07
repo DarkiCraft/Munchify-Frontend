@@ -16,6 +16,7 @@ export function AppLayout() {
           <NavLink to="/recommendations">Recommendations</NavLink>
           <NavLink to="/activity">Activity</NavLink>
           <NavLink to="/login">Login</NavLink>
+          <NavLink to="/signup">Signup</NavLink>
         </nav>
         <div style={{ marginTop: 14 }}>
           <button
